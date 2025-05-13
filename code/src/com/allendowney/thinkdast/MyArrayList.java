@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.IntStream;
 
 /**
  * @author downey
@@ -38,14 +39,24 @@ public class MyArrayList<T> implements List<T> {
 		mal.add(3);
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 
-		mal.remove(new Integer(2));
+		Integer i = Integer.valueOf(2);
+
+
+		mal.remove(Integer.valueOf(2));
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 	}
 
 	@Override
 	public boolean add(T element) {
-		// TODO: FILL THIS IN!
-		return false;
+		if(size >= array.length) {
+
+			array = Arrays.copyOf(array, array.length * 2);
+			array[size] = element;
+		} else array[size] = element;
+
+
+		size++;
+		return true;
 	}
 
 	@Override
@@ -110,7 +121,12 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public int indexOf(Object target) {
-		// TODO: FILL THIS IN!
+
+		for (int i = 0; i < size; i++) {
+			if (equals(target, array[i]))
+				return i;
+		}
+
 		return -1;
 	}
 
@@ -181,8 +197,15 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		// TODO: FILL THIS IN!
-		return null;
+		T t = array[index];
+		size--;
+
+		array = (T[])Arrays.stream(array)
+				.filter(n -> indexOf((Object)n) != index)
+				.toArray();
+		//T[] newArray = (T[]) (new Object[10]);
+
+		return t;
 	}
 
 	@Override
@@ -201,8 +224,11 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: FILL THIS IN!
-		return null;
+		T removeElement = get(index);
+
+		array[index] = element;
+
+		return removeElement;
 	}
 
 	@Override

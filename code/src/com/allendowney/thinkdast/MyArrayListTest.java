@@ -115,7 +115,8 @@ public class MyArrayListTest {
 		assertThat(mylist.contains(4), equalTo(false));
 		assertThat(mylist.contains(null), equalTo(false));
 		mylist.add(null);
-		assertThat(mylist.contains(null), equalTo(true));
+		boolean flag = mylist.contains(null);
+		assertThat(flag, equalTo(true));
 	}
 
 	/**

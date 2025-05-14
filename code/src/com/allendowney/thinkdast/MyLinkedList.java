@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.allendowney.thinkdast;
 
@@ -62,7 +62,7 @@ public class MyLinkedList<E> implements List<E> {
 		mll.add(3);
 		System.out.println(Arrays.toString(mll.toArray()) + " size = " + mll.size());
 
-		mll.remove(new Integer(2));
+		mll.remove(Integer.valueOf(2));
 		System.out.println(Arrays.toString(mll.toArray()) + " size = " + mll.size());
 	}
 
@@ -82,7 +82,21 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
-		//TODO: FILL THIS IN!
+
+		Node newNode = new Node(element);
+
+		if(index == 0) {
+			newNode.next = head;
+			head = newNode;
+			size++;
+			return;
+		}
+
+		Node targetNode = getNode(index - 1);
+		newNode.next = targetNode.next;
+		targetNode.next = newNode;
+		size++;
+
 	}
 
 	@Override
@@ -143,7 +157,13 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public int indexOf(Object target) {
-		//TODO: FILL THIS IN!
+		Node node = head;
+
+		for(int i = 0; node != null; i++, node = node.next) {
+			if(equals(target, node.data)) {
+				return i;
+			}
+		}
 		return -1;
 	}
 
@@ -208,6 +228,26 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public E remove(int index) {
+		if(index == 0) {
+			E data = head.data;
+			head = head.next;
+			size--;
+			return data;
+		}
+
+
+		Node target = getNode(index);
+
+		Node temp = head;
+		for(int i = 0; temp != null; i++, temp = temp.next) {
+			if(temp.next == target) {
+				temp.next = target.next;
+				target.next = null;
+				size--;
+				return target.data;
+			}
+		}
+
 		//TODO: FILL THIS IN!
 		return null;
 	}
